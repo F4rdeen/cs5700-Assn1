@@ -3,7 +3,7 @@ class Triangle(
     private val p2: Point,
     private val p3: Point
 ) : Shape() {
-    override val points = listOf(p1, p2, p3)
+    public override val points = listOf(p1, p2, p3) // explicitly public
 
     init {
         require(area() > 0.000001) { "Points must not be collinear" }
