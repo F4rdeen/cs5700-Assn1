@@ -1,10 +1,28 @@
-class Rectangle(val topLeft: Point, val bottomRight: Point) {
-    fun getTopLeft() = topLeft.clone()
-    fun getBottomRight() = bottomRight.clone()
-    fun area() = (bottomRight.getX() - topLeft.getX()) *
-            (bottomRight.getY() - topLeft.getY())
-    fun move(dx: Double, dy: Double) {
-        topLeft.move(dx, dy)
-        bottomRight.move(dx, dy)
+open class Rectangle(
+    private val topLeft: Point,
+    private val bottomRight: Point
+) : Shape() {
+    override val points = listOf(topLeft, bottomRight)
+
+    init {
+        require(topLeft.getX() != bottomRight.getX() &&
+                topLeft.getY() != bottomRight.getY()) {
+            "Rectangle must have non-zero dimensions"
+        }
+    }
+
+    fun area() = kotlin.math.abs(
+        (bottomRight.getX() - topLeft.getX()) *
+                (bottomRight.getY() - topLeft.getY())
+    )
+
+    open fun getTopLeft() = topLeft.clone()
+    open fun getBottomRight() = bottomRight.clone()
+
+    override fun move(dx: Double, dy: Double): Shape {
+        return Rectangle(
+            topLeft.clone().apply { move(dx, dy) },
+            bottomRight.clone().apply { move(dx, dy) }
+        )
     }
 }

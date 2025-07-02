@@ -1,11 +1,25 @@
-import kotlin.math.PI
+open class Ellipse(
+    private val center: Point,
+    private val rx: Double,
+    private val ry: Double
+) : Shape() {
+    override val points = listOf(center)
 
-class Ellipse(val center: Point, val rx: Double, val ry: Double) {
+    init {
+        require(rx > 0.0 && ry > 0.0) { "Radii must be positive" }
+    }
+
+    fun area() = kotlin.math.PI * rx * ry
+
     fun getCenter() = center.clone()
     fun getRx() = rx
     fun getRy() = ry
-    fun area() = PI * rx * ry
-    fun move(dx: Double, dy: Double) {
-        center.move(dx, dy)
+
+    override fun move(dx: Double, dy: Double): Shape {
+        return Ellipse(
+            center.clone().apply { move(dx, dy) },
+            rx,
+            ry
+        )
     }
 }
